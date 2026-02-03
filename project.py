@@ -46,27 +46,27 @@ col_income   = "3. Monthly Allowance or Income"
 
 
 
-# 🎯 Target column
+#Target column
 target_total = col_misc
 
-# ✅ Feature(s): using only Monthly Income (no leakage from target)
+# Feature(s): using only Monthly Income (no leakage from target)
 feature_cols_total = [
     col_income,col_food,col_shopping,col_travel
 ]
 
-# ✅ Remove rows with missing values for these columns
+#Remove rows with missing values for these columns
 df_total = df.dropna(subset=feature_cols_total + [target_total])
 
 X_tot = df_total[feature_cols_total].copy()
 y_tot = df_total[target_total].copy()
 
-# ✅ Ensure numeric types
+#Ensure numeric types
 for col in feature_cols_total:
     X_tot[col] = pd.to_numeric(X_tot[col], errors="coerce")
 
 y_tot = pd.to_numeric(y_tot, errors="coerce")
 
-# ✅ Remove invalid rows (NaNs after conversion)
+#Remove invalid rows (NaNs after conversion)
 valid_idx_tot = X_tot.notna().all(axis=1) & y_tot.notna()
 X_tot = X_tot[valid_idx_tot]
 y_tot = y_tot[valid_idx_tot]
@@ -90,7 +90,7 @@ X_tot_train, X_tot_test, y_tot_train, y_tot_test = train_test_split(
 )
 
 # ---------------------------
-# ✅ 1️⃣ MULTIPLE LINEAR REGRESSION
+# 1.MULTIPLE LINEAR REGRESSION
 # ---------------------------
 
 lr_tot = LinearRegression()
@@ -103,7 +103,7 @@ print("MAE :", mean_absolute_error(y_tot_test, pred_tot_lr))
 print("R2  :", r2_score(y_tot_test, pred_tot_lr))
 
 # ---------------------------
-# ✅ 2️⃣ POLYNOMIAL REGRESSION (DEGREE 2)
+# 2.POLYNOMIAL REGRESSION (DEGREE 2)
 # ---------------------------
 
 poly_tot = PolynomialFeatures(degree=2)
@@ -120,7 +120,7 @@ print("MAE :", mean_absolute_error(y_tot_test, pred_tot_poly))
 print("R2  :", r2_score(y_tot_test, pred_tot_poly))
 
 # ---------------------------
-# ✅ 3️⃣ RANDOM FOREST REGRESSION
+# 3.RANDOM FOREST REGRESSION
 # ---------------------------
 
 rf_tot = RandomForestRegressor(
@@ -168,7 +168,7 @@ X2_train, X2_test, y2_train, y2_test = train_test_split(
 )
 
 # ---------------------------
-# ✅ LOGISTIC REGRESSION
+# LOGISTIC REGRESSION
 # ---------------------------
 log = LogisticRegression(max_iter=1000)
 log.fit(X2_train, y2_train)
@@ -221,12 +221,12 @@ print(classification_report(y2_test, pred_svm))
 
 
 # ============================================================
-# ✅ ✅ ✅ 3. CLASSIFICATION: SPENDING CATEGORY
+# 3. CLASSIFICATION: SPENDING CATEGORY
 # ============================================================
 
 print("\n================ CLASSIFICATION: SPENDING CATEGORY =================")
 
-# 🔹 Correct column name in your dataset:
+#Correct column name in your dataset:
 # '10. Category spent on most'
 target3 = "10. Category spent on most"
 
@@ -245,7 +245,7 @@ X3_train, X3_test, y3_train, y3_test = train_test_split(
 )
 
 # ---------------------------
-# ✅ LOGISTIC REGRESSION
+# LOGISTIC REGRESSION
 # ---------------------------
 log3 = LogisticRegression(max_iter=1000)
 log3.fit(X3_train, y3_train)
@@ -434,3 +434,4 @@ for i, (name, model) in enumerate(multi_models.items(), 1):
 
 plt.tight_layout()
 plt.show()
+
